@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Information</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-primary">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active mr-4" aria-current="page" href="index.html"><b>Home</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mr-4" href="#"><b>About Us</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mr-4" href="#"><b>Login</b></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid heading">
+        <h3>Student Details </h3>
+    </div>
+
+    <div class="heroview">
+        
+    </div>
+</body>
+
+<script>
+    let heroView = document.querySelector(".heroview");
+
+    let displayData = () => {
+        var studentData=JSON.parse(localStorage.getItem("studentDetails")) ?? []; //null handle operator
+        // console.log(studentData);
+        let finaldata = '';
+        studentData.forEach((element, i) => {
+            // console.log(element.firstname);
+            finaldata += `<div class="items">
+            <h6>First Name: ${element.firstname}</h6>
+            <h6>Last Name: ${element.lastname}</h6>
+            <h6>Birthday: ${element.dob}</h6>
+            <h6>Email: ${element.email}</h6>
+            <h6>Phone Number: ${element.contact}</h6>
+            <h6>Branch: ${element.branch}</h6>
+            <h6>Roll no: ${element.rollno}</h6>
+            <h6>Registration Date: ${element.registrationDate}</h6>
+            <h6>Parent Name: ${element.parentName}</h6>
+            <h6>Parent's Contact Number: ${element.parentMobileNo}</h6>
+            <button type="button" class="btn btn-danger deletebtn" data-index="${i}">Delete</button>
+        </div>`
+        })
+
+        heroView.innerHTML=finaldata;
+        attachDeleteListeners();    
+    }
+    displayData();
+
+    function attachDeleteListeners() {
+    let deletebtn = document.querySelectorAll(".deletebtn");
+    deletebtn.forEach(button => {
+        button.addEventListener('click', function() {
+            let index = this.getAttribute('data-index');
+            deleteRecord(index);
+        });
+    });
+    } 
+
+    function deleteRecord(index) {
+    var studentData = JSON.parse(localStorage.getItem("studentDetails")) ?? [];
+    studentData.splice(index, 1);
+    localStorage.setItem("studentDetails", JSON.stringify(studentData));
+    displayData(); // Refresh the display after deleting the record
+    }
+
+
+</script>
+</html>
